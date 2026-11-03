@@ -103,7 +103,7 @@ class _DownloaderHomeState extends State<DownloaderHome> {
       setState(()=>message='This looks like a ${platform(value)} page link, not a direct video file. Use the platform’s official Save/Download option when available. This app does not bypass logins or platform restrictions.'); return;
     }
     if (busy) return;
-    setState(()=>{busy=true,progress=0,message='Starting download…'});
+    setState(() { busy = true; progress = 0; message = 'Starting download…'; });
     cancel = CancelToken();
     try {
       final base = await getApplicationDocumentsDirectory();
@@ -117,7 +117,7 @@ class _DownloaderHomeState extends State<DownloaderHome> {
         path='${dir.path}/${dot>0?name.substring(0,dot):name}_$i${dot>0?name.substring(dot):'.mp4'}'; i++;
       }
       await dio.download(value,path,cancelToken:cancel,onReceiveProgress:(r,t) {
-        if (mounted) setState(()=>{progress:t>0?r/t:0,message:t>0?'Downloading ${(r/t*100).toStringAsFixed(0)}%':'Downloading…'});
+        if (mounted) setState(() { progress = t > 0 ? r / t : 0; message = t > 0 ? 'Downloading ${(r/t*100).toStringAsFixed(0)}%' : 'Downloading…'; });
       });
       final f=File(path); final bytes=await f.length();
       items.insert(0,VideoItem(path.split('/').last,path,value,DateTime.now().toIso8601String(),bytes));
@@ -127,7 +127,7 @@ class _DownloaderHomeState extends State<DownloaderHome> {
       if(mounted) setState(()=>message=CancelToken.isCancel(e)?'Download cancelled.':'Download failed. The server may block direct downloads or require access.');
     } catch(_) {
       if(mounted) setState(()=>message='Could not save the file. Check storage and try again.');
-    } finally { if(mounted) setState(()=>{busy=false,progress=0}); }
+    } finally { if (mounted) setState(() { busy = false; progress = 0; }); }
   }
   Future<void> logEvent(String p,int b) async {
     if(sbUrl.isEmpty||sbKey.isEmpty) return;
