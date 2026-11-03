@@ -14,7 +14,7 @@ final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 20), receive
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (sbUrl.startsWith('https://') && sbKey.isNotEmpty) {
-    try { await Supabase.initialize(url: sbUrl, anonKey: sbKey); } catch (_) {}
+    try { await Supabase.initialize(url: sbUrl, publishableKey: sbKey); } catch (_) {}
   }
   runApp(const VideoDownloaderApp());
 }
@@ -169,7 +169,13 @@ class _DownloaderHomeState extends State<DownloaderHome> {
     final v=items[i]; return Card(color:const Color(0xFF171F31),child:ListTile(
       leading:const CircleAvatar(backgroundColor:Color(0xFF29245F),child:Icon(Icons.movie,color:Color(0xFFC4BFFF))),
       title:Text(v.name,maxLines:1,overflow:TextOverflow.ellipsis),subtitle:Text('${size(v.bytes)} • ${v.date.split('T').first}'),
-      onTap:()async{if(await File(v.path).exists()){await OpenFilex.open(v.path);}else if(mounted)setState(()=>message='File no longer exists on this device.');},
+      onTap:() async {
+        if (await File(v.path).exists()) {
+          await OpenFilex.open(v.path);
+        } else if (mounted) {
+          setState(() => message = 'File no longer exists on this device.');
+        }
+      },
       trailing:PopupMenuButton<String>(onSelected:(a)async{if(a=='share')await Share.shareXFiles([XFile(v.path)]);if(a=='delete')await remove(v);},itemBuilder:(_)=>const[PopupMenuItem(value:'share',child:Text('Share')),PopupMenuItem(value:'delete',child:Text('Delete'))]),
     ));
   });
