@@ -59,11 +59,14 @@ jobs:
           p.write_text(s)
           PY
 
+      - name: Clean Project
+        run: flutter clean
+
       - name: Install Flutter Packages
         run: flutter pub get
 
-      - name: Clean Project
-        run: flutter clean
+      - name: Analyze Dart
+        run: flutter analyze --no-pub
 
       - name: Build Release APK
         run: flutter build apk --release
