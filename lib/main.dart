@@ -44,7 +44,7 @@ class VideoItem {
   final int bytes;
   const VideoItem(this.name, this.path, this.url, this.date, this.bytes);
   Map<String,dynamic> toMap() => {'name':name,'path':path,'url':url,'date':date,'bytes':bytes};
-  factory VideoItem.fromMap(Map<String,dynamic> m) => VideoItem(m['name']??'video',m['path']??'',m['url']??'',m['date']??'',m['bytes']??0);
+  factory VideoItem.fromMap(Map<String,dynamic> m) => VideoItem(m['name']??'video',m['path']??'',m['url']??'',m['date']??'',int.tryParse('${m['bytes'] ?? 0}') ?? 0);
 }
 
 class DownloaderHome extends StatefulWidget {
