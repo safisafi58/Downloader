@@ -21,6 +21,8 @@ jobs:
           cache: true
       - name: Generate Android project
         run: flutter create --platforms=android --org com.safisafi.downloader --project-name video_downloader .
+      - name: Add Android network permission
+        run: sed -i '/<application/i\    <uses-permission android:name="android.permission.INTERNET" />' android/app/src/main/AndroidManifest.xml
       - name: Install packages
         run: flutter pub get
       - name: Analyze Dart
